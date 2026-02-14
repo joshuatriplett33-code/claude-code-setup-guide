@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Setup Guide - macOS Intel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .step {
+            margin-bottom: 40px;
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .step h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .step p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .command-box {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .command-box code {
+            display: block;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn.copied {
+            background: #48bb78;
+        }
+
+        .info-box {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fffaf0;
+            border-left: 4px solid #ed8936;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .option-group {
+            margin: 20px 0;
+        }
+
+        .option {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .option h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #48bb78;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .progress-bar {
+            position: sticky;
+            top: 0;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .checklist {
+            margin: 15px 0;
+        }
+
+        .checklist-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f7fafc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        ul li {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            background: #f7fafc;
+            padding: 30px;
+            text-align: center;
+            color: #718096;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        kbd {
+            background: #edf2f7;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Claude Code Setup Guide</h1>
+            <p>Complete Setup for macOS Intel - From Zero to Hero</p>
+        </div>
+
+        <div class="content">
+            <!-- Step 0: Prerequisites Check -->
+            <div class="step">
+                <span class="step-number">0</span>
+                <h2>Prerequisites Check</h2>
+                <p>Before we begin, let's verify your system meets the basic requirements:</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check0">
+                        <label for="check0">macOS 10.15 or later (Intel chip)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1">
+                        <label for="check1">At least 4GB RAM available</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2">
+                        <label for="check2">Active internet connection</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3">
+                        <label for="check3">Terminal app (pre-installed on macOS)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4">
+                        <label for="check4">An email address for GitHub account</label>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>Opening Terminal:</strong> Press <kbd>Cmd + Space</kbd>, type "Terminal", and press Enter.
+                </div>
+            </div>
+
+            <!-- Step 1: Install Homebrew -->
+            <div class="step">
+                <span class="step-number">1</span>
+                <h2>Install Homebrew (Package Manager)</h2>
+                <p>Homebrew is the easiest way to install software on macOS. Let's install it first:</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, '/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;')">Copy</button>
+                    <code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>What happens:</strong> This will download and install Homebrew. You may be asked to enter your Mac password. The installation takes 2-5 minutes.
+                </div>
+
+                <p>After installation, verify Homebrew is working:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'brew --version')">Copy</button>
+                    <code>brew --version</code>
+                </div>
+
+                <p>You should see a version number like "Homebrew 4.x.x"</p>
+            </div>
+
+            <!-- Step 2: Install and Configure Git -->
+            <div class="step">
+                <span class="step-number">2</span>
+                <h2>Install and Configure Git</h2>
+                <p>Git is essential for version control and working with GitHub. Let's install and configure it:</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'brew install git')">Copy</button>
+                    <code>brew install git</code>
+                </div>
+
+                <p>Verify Git is installed:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'git --version')">Copy</button>
+                    <code>git --version</code>
+                </div>
+
+                <p>Now configure Git with your identity (required for commits):</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'git config --global user.name &quot;Your Name&quot;')">Copy</button>
+                    <code>git config --global user.name "Your Name"</code>
+                </div>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'git config --global user.email &quot;your.email@example.com&quot;')">Copy</button>
+                    <code>git config --global user.email "your.email@example.com"</code>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Important:</strong> Replace "Your Name" and "your.email@example.com" with your actual name and the email you'll use for GitHub.
+                </div>
+
+                <p>Verify your configuration:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'git config --list')">Copy</button>
+                    <code>git config --list</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>Optional but recommended:</strong> Set your default branch name to "main":
+                    <div class="command-box" style="margin-top: 10px;">
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'git config --global init.defaultBranch main')">Copy</button>
+                        <code>git config --global init.defaultBranch main</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: GitHub Account Setup -->
+            <div class="step">
+                <span class="step-number">3</span>
+                <h2>Create a GitHub Account</h2>
+                <p>GitHub is where you'll store and share your code. Let's set up your account:</p>
+
+                <div class="option-group">
+                    <div class="option">
+                        <h3>Create Your GitHub Account</h3>
+                        <ul>
+                            <li>Visit <a href="https://github.com/signup" target="_blank">github.com/signup</a></li>
+                            <li>Enter your email address (use the same one you configured in Git)</li>
+                            <li>Create a strong password</li>
+                            <li>Choose a username (this will be public)</li>
+                            <li>Complete the verification puzzle</li>
+                            <li>Verify your email address when prompted</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Set Up SSH Key (Recommended for Secure Access)</h3>
+                <p>SSH keys let you connect to GitHub without entering your password each time:</p>
+
+                <p><strong>Step 1:</strong> Generate a new SSH key:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'ssh-keygen -t ed25519 -C &quot;your.email@example.com&quot;')">Copy</button>
+                    <code>ssh-keygen -t ed25519 -C "your.email@example.com"</code>
+                </div>
+                <p>Press Enter to accept the default file location, then enter a passphrase (or press Enter for no passphrase).</p>
+
+                <p><strong>Step 2:</strong> Start the SSH agent:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'eval &quot;$(ssh-agent -s)&quot;')">Copy</button>
+                    <code>eval "$(ssh-agent -s)"</code>
+                </div>
+
+                <p><strong>Step 3:</strong> Add your SSH key to the agent:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'ssh-add ~/.ssh/id_ed25519')">Copy</button>
+                    <code>ssh-add ~/.ssh/id_ed25519</code>
+                </div>
+
+                <p><strong>Step 4:</strong> Copy your public key to clipboard:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'pbcopy < ~/.ssh/id_ed25519.pub')">Copy</button>
+                    <code>pbcopy < ~/.ssh/id_ed25519.pub</code>
+                </div>
+
+                <p><strong>Step 5:</strong> Add the key to your GitHub account:</p>
+                <ul>
+                    <li>Go to <a href="https://github.com/settings/keys" target="_blank">github.com/settings/keys</a></li>
+                    <li>Click "New SSH key"</li>
+                    <li>Give it a title (e.g., "My MacBook")</li>
+                    <li>Paste your key (it's already in your clipboard)</li>
+                    <li>Click "Add SSH key"</li>
+                </ul>
+
+                <p><strong>Step 6:</strong> Test your connection:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'ssh -T git@github.com')">Copy</button>
+                    <code>ssh -T git@github.com</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>Success!</strong> You should see: "Hi username! You've successfully authenticated..."
+                </div>
+            </div>
+
+            <!-- Step 4: GitHub Desktop Setup -->
+            <div class="step">
+                <span class="step-number">4</span>
+                <h2>Install GitHub Desktop</h2>
+                <p>GitHub Desktop provides a visual interface for Git, making it easier to manage repositories:</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'brew install --cask github')">Copy</button>
+                    <code>brew install --cask github</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>What this installs:</strong> GitHub Desktop - a free, open-source GUI application for working with Git repositories.
+                </div>
+
+                <h3>Configure GitHub Desktop</h3>
+                <div class="option-group">
+                    <div class="option">
+                        <h3>Initial Setup</h3>
+                        <ul>
+                            <li>Open GitHub Desktop from your Applications folder (or press <kbd>Cmd + Space</kbd> and type "GitHub Desktop")</li>
+                            <li>Click "Sign in to GitHub.com"</li>
+                            <li>Your browser will open - authorize the application</li>
+                            <li>Return to GitHub Desktop</li>
+                        </ul>
+                    </div>
+
+                    <div class="option">
+                        <h3>Configure Preferences</h3>
+                        <ul>
+                            <li>Go to <strong>GitHub Desktop > Settings</strong> (or press <kbd>Cmd + ,</kbd>)</li>
+                            <li><strong>Git tab:</strong> Verify your name and email match what you configured earlier</li>
+                            <li><strong>Integrations tab:</strong> Choose your preferred text editor (e.g., VS Code, Sublime Text)</li>
+                            <li><strong>Integrations tab:</strong> Choose your preferred shell (Terminal or iTerm)</li>
+                        </ul>
+                    </div>
+
+                    <div class="option">
+                        <h3>Clone Your First Repository (Optional)</h3>
+                        <ul>
+                            <li>Click "Clone a Repository from the Internet"</li>
+                            <li>Select a repository from your GitHub account, or enter a URL</li>
+                            <li>Choose where to save it on your Mac</li>
+                            <li>Click "Clone"</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>Pro tip:</strong> You can use both GitHub Desktop and the command line! GitHub Desktop is great for visualizing changes, while the command line gives you more control.
+                </div>
+            </div>
+
+            <!-- Step 5: Install Node.js (Optional) -->
+            <div class="step">
+                <span class="step-number">5</span>
+                <h2>Install Node.js (Optional)</h2>
+                <p>Node.js is optional for Claude Code, but good to have for general development:</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'brew install node')">Copy</button>
+                    <code>brew install node</code>
+                </div>
+
+                <p>Verify Node.js installation:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'node --version')">Copy</button>
+                    <code>node --version</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>Note:</strong> Claude Code's Homebrew installation doesn't require Node.js. This step is optional but recommended for general development work.
+                </div>
+            </div>
+
+            <!-- Step 6: Install Claude Code -->
+            <div class="step">
+                <span class="step-number">6</span>
+                <h2>Install Claude Code</h2>
+                <p>Now for the main event! Choose your preferred installation method:</p>
+
+                <div class="option-group">
+                    <div class="option">
+                        <h3>Option A: Homebrew <span class="badge">RECOMMENDED</span></h3>
+                        <p>Easiest and most reliable method for macOS:</p>
+                        <div class="command-box">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'brew install --cask claude-code')">Copy</button>
+                            <code>brew install --cask claude-code</code>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <h3>Option B: Native Installer</h3>
+                        <p>Standalone installation with no dependencies:</p>
+                        <div class="command-box">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'curl -fsSL https://claude.ai/install.sh | bash')">Copy</button>
+                            <code>curl -fsSL https://claude.ai/install.sh | bash</code>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <h3>Option C: NPM (If you have Node.js 18+)</h3>
+                        <p>Install via Node Package Manager:</p>
+                        <div class="command-box">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'npm install -g @anthropic-ai/claude-code')">Copy</button>
+                            <code>npm install -g @anthropic-ai/claude-code</code>
+                        </div>
+                        <div class="warning-box">
+                            <strong>Important:</strong> Do NOT use <code>sudo</code> with npm install. This can cause permission issues.
+                        </div>
+                    </div>
+                </div>
+
+                <p>Verify the installation:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'claude doctor')">Copy</button>
+                    <code>claude doctor</code>
+                </div>
+
+                <div class="info-box">
+                    This should display your installation type and version number, confirming Claude Code is installed correctly.
+                </div>
+            </div>
+
+            <!-- Step 7: Set Up Authentication -->
+            <div class="step">
+                <span class="step-number">7</span>
+                <h2>Set Up Your Claude Account</h2>
+                <p>You'll need a Claude account to use Claude Code. Choose one of these options:</p>
+
+                <div class="option-group">
+                    <div class="option">
+                        <h3>Option A: Claude API Console <span class="badge">RECOMMENDED</span></h3>
+                        <ul>
+                            <li>Visit <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></li>
+                            <li>Create an account or log in</li>
+                            <li>Set up billing (pay-as-you-go, starts at $0)</li>
+                            <li>You'll authenticate in the next step when you run Claude</li>
+                        </ul>
+                    </div>
+
+                    <div class="option">
+                        <h3>Option B: Claude Pro/Max Subscription</h3>
+                        <ul>
+                            <li>Visit <a href="https://claude.com/pricing" target="_blank">claude.com/pricing</a></li>
+                            <li>Subscribe to Claude Pro ($20/month) or Claude Max ($100/month)</li>
+                            <li>You'll authenticate in the next step when you run Claude</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>Good to know:</strong> You can use the same email for both console.anthropic.com and claude.com accounts.
+                </div>
+            </div>
+
+            <!-- Step 8: First Launch -->
+            <div class="step">
+                <span class="step-number">8</span>
+                <h2>Launch Claude Code for the First Time</h2>
+                <p>Navigate to a project folder (or create a test folder):</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'mkdir ~/claude-test\ncd ~/claude-test')">Copy</button>
+                    <code>mkdir ~/claude-test
+cd ~/claude-test</code>
+                </div>
+
+                <p>Now start Claude Code:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'claude')">Copy</button>
+                    <code>claude</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>What happens next:</strong>
+                    <ul>
+                        <li>Your browser will open for authentication</li>
+                        <li>Log in with your Claude account</li>
+                        <li>Return to Terminal - you're ready to go!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 9: Try Your First Commands -->
+            <div class="step">
+                <span class="step-number">9</span>
+                <h2>Try Your First Commands</h2>
+                <p>Once Claude Code is running, try these commands by typing them at the Claude prompt:</p>
+
+                <div class="option-group">
+                    <div class="option">
+                        <h3>Create a simple file:</h3>
+                        <div class="command-box">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'Create a hello.py file that prints Hello World')">Copy</button>
+                            <code>Create a hello.py file that prints Hello World</code>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <h3>Ask about your project:</h3>
+                        <div class="command-box">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'What files are in this directory?')">Copy</button>
+                            <code>What files are in this directory?</code>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <h3>Initialize a Git repository:</h3>
+                        <div class="command-box">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'Initialize a git repository and create a .gitignore file')">Copy</button>
+                            <code>Initialize a git repository and create a .gitignore file</code>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <h3>Get help:</h3>
+                        <div class="command-box">
+                            <button class="copy-btn" onclick="copyToClipboard(this, '/help')">Copy</button>
+                            <code>/help</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>Pro tip:</strong> Talk to Claude Code naturally, like you're talking to a colleague. Describe what you want to achieve!
+                </div>
+            </div>
+
+            <!-- Step 10: Troubleshooting -->
+            <div class="step">
+                <span class="step-number">10</span>
+                <h2>Troubleshooting Common Issues</h2>
+
+                <div class="option">
+                    <h3>Problem: "command not found: claude"</h3>
+                    <p>Solution: Try the native installer instead:</p>
+                    <div class="command-box">
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'curl -fsSL https://claude.ai/install.sh | bash')">Copy</button>
+                        <code>curl -fsSL https://claude.ai/install.sh | bash</code>
+                    </div>
+                    <p>Then restart your Terminal and try again.</p>
+                </div>
+
+                <div class="option">
+                    <h3>Problem: npm permission errors</h3>
+                    <p>Solution: Don't use sudo. Instead, use Homebrew:</p>
+                    <div class="command-box">
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'brew install --cask claude-code')">Copy</button>
+                        <code>brew install --cask claude-code</code>
+                    </div>
+                </div>
+
+                <div class="option">
+                    <h3>Problem: Claude Code won't start</h3>
+                    <p>Solution: Run the diagnostic tool:</p>
+                    <div class="command-box">
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'claude doctor')">Copy</button>
+                        <code>claude doctor</code>
+                    </div>
+                </div>
+
+                <div class="option">
+                    <h3>Problem: "Permission denied (publickey)" when using Git</h3>
+                    <p>Solution: Your SSH key may not be set up correctly. Re-run the SSH setup in Step 3, or use HTTPS instead:</p>
+                    <div class="command-box">
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'git clone https://github.com/username/repo.git')">Copy</button>
+                        <code>git clone https://github.com/username/repo.git</code>
+                    </div>
+                </div>
+
+                <div class="option">
+                    <h3>Problem: GitHub Desktop won't sign in</h3>
+                    <p>Solutions:</p>
+                    <ul>
+                        <li>Make sure you've verified your GitHub email address</li>
+                        <li>Try signing out and back in: <strong>GitHub Desktop > Sign Out</strong></li>
+                        <li>Check your internet connection</li>
+                        <li>Reinstall GitHub Desktop: <code>brew reinstall --cask github</code></li>
+                    </ul>
+                </div>
+
+                <div class="option">
+                    <h3>Problem: Git asks for username/password on every push</h3>
+                    <p>Solution: Set up SSH keys (see Step 3) or configure Git credential helper:</p>
+                    <div class="command-box">
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'git config --global credential.helper osxkeychain')">Copy</button>
+                        <code>git config --global credential.helper osxkeychain</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Useful Commands Reference -->
+            <div class="step">
+                <span class="step-number">11</span>
+                <h2>Quick Reference: Useful Commands</h2>
+
+                <h3>Terminal Navigation:</h3>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'pwd')">Copy</button>
+                    <code>pwd</code>
+                </div>
+                <p>Shows your current directory location</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'ls')">Copy</button>
+                    <code>ls</code>
+                </div>
+                <p>Lists files in current directory</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'cd ~/Desktop')">Copy</button>
+                    <code>cd ~/Desktop</code>
+                </div>
+                <p>Changes to your Desktop folder</p>
+
+                <h3>Git Commands:</h3>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'git status')">Copy</button>
+                    <code>git status</code>
+                </div>
+                <p>Shows the current state of your repository</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'git add .')">Copy</button>
+                    <code>git add .</code>
+                </div>
+                <p>Stages all changed files for commit</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'git commit -m &quot;Your message here&quot;')">Copy</button>
+                    <code>git commit -m "Your message here"</code>
+                </div>
+                <p>Creates a commit with your staged changes</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'git push')">Copy</button>
+                    <code>git push</code>
+                </div>
+                <p>Pushes your commits to GitHub</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'git pull')">Copy</button>
+                    <code>git pull</code>
+                </div>
+                <p>Downloads and merges changes from GitHub</p>
+
+                <h3>Claude Code Commands:</h3>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'claude')">Copy</button>
+                    <code>claude</code>
+                </div>
+                <p>Starts Claude Code in current directory</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'claude --version')">Copy</button>
+                    <code>claude --version</code>
+                </div>
+                <p>Shows Claude Code version</p>
+
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, 'claude doctor')">Copy</button>
+                    <code>claude doctor</code>
+                </div>
+                <p>Diagnoses installation issues</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Congratulations!</strong> You're ready to use Claude Code with GitHub.</p>
+            <p>For more help, visit the <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank">official documentation</a> or run <code>/help</code> in Claude Code.</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">Made for macOS Intel - Last updated: February 2026</p>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(button, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy. Please select and copy manually.');
+            });
+        }
+
+        // Progress bar based on scroll
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / documentHeight) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        });
+
+        // Save checkbox states to localStorage
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const savedState = localStorage.getItem(checkbox.id);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            }
+
+            checkbox.addEventListener('change', (e) => {
+                localStorage.setItem(e.target.id, e.target.checked);
+            });
+        });
+    </script>
+</body>
+</html>
