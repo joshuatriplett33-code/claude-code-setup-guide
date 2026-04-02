@@ -656,9 +656,107 @@ cd ~/claude-test</code>
                 </div>
             </div>
 
-            <!-- Step 10: Troubleshooting -->
+            <!-- Step 10: Install Orqestrate -->
             <div class="step">
                 <span class="step-number">10</span>
+                <h2>Install Orqestrate (AI Project Orchestration)</h2>
+                <p>Orqestrate is a multi-agent orchestration framework for Claude Code. It adds powerful slash commands like <code>/architect</code>, <code>/builder</code>, <code>/orch</code>, and <code>/pm</code> that let you run complex projects with parallel AI agents.</p>
+
+                <div class="warning-box">
+                    <strong>Invite Required:</strong> Orqestrate is a private repository. You must accept a GitHub invitation before you can install it. If you haven't received one, ask the project owner to invite you.
+                </div>
+
+                <h3>Step 1: Accept the GitHub Invite</h3>
+                <ul>
+                    <li>Check your email for an invitation from <strong>prime00000</strong> to collaborate on <strong>template-project</strong></li>
+                    <li>Click "View invitation" in the email, or visit <a href="https://github.com/prime00000/template-project/invitations" target="_blank">github.com/prime00000/template-project/invitations</a></li>
+                    <li>Click <strong>"Accept invitation"</strong></li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Can't find the email?</strong> Check your spam folder, or visit <a href="https://github.com/notifications" target="_blank">github.com/notifications</a> to see pending invitations.
+                </div>
+
+                <h3>Step 2: Clone and Install Orqestrate</h3>
+                <p>You have two options for installation:</p>
+
+                <div class="option-group">
+                    <div class="option">
+                        <h3>Option A: One-Command Install <span class="badge">EASIEST</span></h3>
+                        <p>Clone the repo and run the setup script in one go:</p>
+                        <div class="command-box">
+                            <button class="copy-btn" onclick="copyToClipboard(this, 'git clone https://github.com/prime00000/template-project.git ~/orqestrate && cd ~/orqestrate && ./setup.sh')">Copy</button>
+                            <code>git clone https://github.com/prime00000/template-project.git ~/orqestrate && cd ~/orqestrate && ./setup.sh</code>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <h3>Option B: Double-Click Installer</h3>
+                        <p>If you already have the repo cloned, open Finder, navigate to <code>~/orqestrate</code>, and double-click:</p>
+                        <div class="command-box">
+                            <code>Install Orqestrate.command</code>
+                        </div>
+                        <p>macOS may ask you to allow it to run. Right-click &rarr; Open if it's blocked.</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>What the setup script does:</strong>
+                    <ul>
+                        <li>Symlinks slash commands to <code>~/.claude/commands</code> so they're available in Claude Code</li>
+                        <li>Symlinks templates and documentation</li>
+                        <li>Adds helper tools (<code>dev-ports</code>) to your PATH</li>
+                        <li>Makes all scripts executable</li>
+                    </ul>
+                </div>
+
+                <p>Verify Orqestrate is installed by opening Claude Code and typing:</p>
+                <div class="command-box">
+                    <button class="copy-btn" onclick="copyToClipboard(this, '/orch')">Copy</button>
+                    <code>/orch</code>
+                </div>
+                <p>If you see the orchestrator prompt, you're all set!</p>
+
+                <h3>Step 3: Add Orqestrate to GitHub Desktop</h3>
+                <p>So you can manage Orqestrate updates visually:</p>
+                <div class="option-group">
+                    <div class="option">
+                        <h3>Add Existing Repository</h3>
+                        <ul>
+                            <li>Open <strong>GitHub Desktop</strong></li>
+                            <li>Go to <strong>File &rarr; Add Local Repository</strong> (or press <kbd>Cmd + O</kbd>)</li>
+                            <li>Navigate to: <code>/Users/JOSH/orqestrate</code></li>
+                            <li>Click <strong>"Add Repository"</strong></li>
+                        </ul>
+                        <p>You should now see <strong>template-project</strong> in your repository list. You can use GitHub Desktop to pull updates whenever the framework is updated.</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>Keeping Orqestrate up to date:</strong> The framework is actively developed. To get the latest features and fixes, open GitHub Desktop, select the Orqestrate repo, and click <strong>"Fetch origin"</strong> then <strong>"Pull origin"</strong>. Or from Terminal:
+                    <div class="command-box" style="margin-top: 10px;">
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'cd ~/orqestrate && git pull')">Copy</button>
+                        <code>cd ~/orqestrate && git pull</code>
+                    </div>
+                </div>
+
+                <h3>Orqestrate Key Commands</h3>
+                <p>Once installed, these slash commands are available inside Claude Code:</p>
+                <div class="command-box">
+                    <code>/architect   - Design systems and write specifications
+/pm          - Project management and planning
+/orch        - Orchestrate and coordinate builders
+/builder     - Execute tasks in isolated worktrees
+/max         - Analyze parallelization opportunities
+/merge       - Handle branch merges safely
+/self-check  - Quality review of work done
+/endsession  - Update tracking before ending</code>
+                </div>
+            </div>
+
+            <!-- Step 11: Troubleshooting -->
+            <div class="step">
+                <span class="step-number">11</span>
                 <h2>Troubleshooting Common Issues</h2>
 
                 <div class="option">
@@ -710,6 +808,21 @@ cd ~/claude-test</code>
                 </div>
 
                 <div class="option">
+                    <h3>Problem: Orqestrate slash commands not appearing in Claude Code</h3>
+                    <p>Solution: Re-run the setup script to re-create the symlinks:</p>
+                    <div class="command-box">
+                        <button class="copy-btn" onclick="copyToClipboard(this, 'cd ~/orqestrate && ./setup.sh')">Copy</button>
+                        <code>cd ~/orqestrate && ./setup.sh</code>
+                    </div>
+                    <p>Then restart Claude Code. If still not working, check that <code>~/.claude/commands</code> exists and contains symlinked files.</p>
+                </div>
+
+                <div class="option">
+                    <h3>Problem: "Repository not found" when cloning Orqestrate</h3>
+                    <p>This means you haven't accepted the invite yet, or it expired. Ask the project owner to re-send the invitation, then accept it at <a href="https://github.com/notifications" target="_blank">github.com/notifications</a>.</p>
+                </div>
+
+                <div class="option">
                     <h3>Problem: Git asks for username/password on every push</h3>
                     <p>Solution: Set up SSH keys (see Step 3) or configure Git credential helper:</p>
                     <div class="command-box">
@@ -721,7 +834,7 @@ cd ~/claude-test</code>
 
             <!-- Useful Commands Reference -->
             <div class="step">
-                <span class="step-number">11</span>
+                <span class="step-number">12</span>
                 <h2>Quick Reference: Useful Commands</h2>
 
                 <h3>Terminal Navigation:</h3>
@@ -798,7 +911,7 @@ cd ~/claude-test</code>
         <div class="footer">
             <p><strong>Congratulations!</strong> You're ready to use Claude Code with GitHub.</p>
             <p>For more help, visit the <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank">official documentation</a> or run <code>/help</code> in Claude Code.</p>
-            <p style="margin-top: 20px; font-size: 0.9em;">Made for macOS Intel - Last updated: February 2026</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">Made for macOS Intel - Last updated: April 2026</p>
         </div>
     </div>
 
